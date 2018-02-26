@@ -4,6 +4,7 @@
 #include <queue>
 #include <algorithm>
 #include <cmath>
+#include <string>
 
 struct IGraph {
 	virtual ~IGraph() {}
@@ -102,84 +103,65 @@ public:
 		}
 		return ans;
 	}
-
-	bool find_way(int from, int to)
-	{
-		std::queue <int> queue;
-		std::vector <bool> visited(_size, false);
-
-		queue.push(from);
-		visited[from] = true;
-		while (!queue.empty()) {
-			int current = queue.front();
-			queue.pop();
-			for (int a : _graph[current]) {
-				if (!visited[a]) {
-					queue.push(a);
-					visited[a] = true;
-				}
-				else if (a == to) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	int find_dif_ways(int from, int to)
-	{
-		std::queue <int> queue;
-		std::vector<int> distance(_size, 0), parent(_size, -1);
-		std::vector<bool> visited(_size, false);
-		int ans(0), dist(std::numeric_limits<int>::max());
-		std::vector <int> ways(_size, 1);
-
-		queue.push(from);
-		distance[from] = 0;
-		visited[from] = true;
-		while (!queue.empty()) {
-			int current = queue.front();
-			queue.pop();
-			for (int a : _graph[current]) {
-				if (!visited[a]) {
-					queue.push(a);
-					distance[a] = distance[current] + 1;
-					parent[a] = current;
-					visited[a] = true;
-					ways[a] = ways[current];
-				}
-				else if (parent[current] != a) {
-					if (distance[current] + 1 == distance[a])
-						ways[a] += ways[current];
-				}
-				if (a == to) {
-					if (distance[current] + 1 < dist) {
-						dist = distance[current] + 1;
-						ans = ways[a];
-					}
-					else if (distance[current] + 1 == dist)
-						ans += ways[current];
-				}
-			}
-		}
-		return ans;
-	}
 };
 
 using namespace std;
 
+const int N = 2000;
+
 int main() {
-	int n, m, a, b;
-	cin >> n >> m;
-	CListGraph graph(n);
-	for (int i(0); i < m; ++i)
+	int graph[N][N];
+	int n;
+	cin >> n;
+	if (n > N)
 	{
-		cin >> a >> b;
-		graph.AddEdge(a, b);
+		cout << "N is too little\n";
+		return 0;
 	}
-	cin >> a >> b;
-	cout << graph.find_dif_ways(a, b);
+	for (int i(0); i < n; ++i)
+		for (int j(0); j < n; ++j)
+		{
+			cin >> graph[i][j];
+		}
+	vector <int> can_be(n, 1);
+	for (int i(0); i < n; ++i)
+	{
+		if (!can_be[i]) continue;
+		for (int j(0); j < n; ++j)
+		{
+			if (i == j) continue;
+			if (graph[i][j] == 1)
+			{
+				can_be[i] = 0;
+				break;
+			}
+			if (graph[i][j] == 0)
+				can_be[j] = 0;
+		}
+	}
+	
+	for (int j(0); j < n; ++j)
+	{
+		if (!can_be[j]) continue;
+		for (int i(0); i < n; ++i)
+		{
+			if (i == j) continue;
+			if (graph[i][j] == 0)
+			{
+				can_be[j] = 0;
+				break;
+			}
+			if (graph[i][j] == 1)
+				can_be[i] = 0;
+		}
+	}
+	string ans("NO");
+	for (int i(0); i < n; ++i)
+	{
+		if (can_be[i])
+			ans = "YES";
+	}
+	cout << ans;
 	cin.get();
 	cin.get();
 }
-
