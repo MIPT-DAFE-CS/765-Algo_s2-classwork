@@ -116,7 +116,8 @@ class CListGraph : public IGraph {
                     if (!visited[a]) {
                         queue.push(a);
                         visited[a] = true;
-                    } else if (a == to) {
+                    }
+                    if (a == to) {
                         return true;
                     }
                 }
@@ -142,15 +143,15 @@ double binary_search(int lwall, int rwall, int R, vector < pair <int, int> > &co
         d = (l + r) / 2.0;
         CListGraph graph(n + 2);
         for (int i(0); i < n; ++i) {
-            if (abs(lwall - columns[i].first) - R - d < eps)
+            if (abs(lwall - columns[i].first) - R < d)
                 graph.AddEdge(0, i + 1); // ребро между левой стеной и колонной
-            if (abs(rwall - columns[i].first) - R - d < eps)
+            if (abs(rwall - columns[i].first) - R < d)
                 graph.AddEdge(i + 1, n + 1); // ребро между правой стеной и колонной
         }
 
         for (int i(0); i < n; ++i)
             for (int j(0); j < n; ++j)
-                if (abs(distance(columns[i], columns[j]) - 2 * R - d) < eps)
+                if (distance(columns[i], columns[j]) - 2 * R < d)
                     graph.AddEdge(i + 1, j + 1);
 
         if (graph.find_way(0, n + 1))
@@ -171,7 +172,7 @@ int main () {
         cin >> columns[i].first >> columns[i].second;
     }
     fixed(cout);
-    double ans = round(1000 * binary_search (XL, XR, r, columns));
+    double ans = 1000 * binary_search (XL, XR, r, columns);
     cout << setprecision(3) << ans / 1000.0;
     cin.get();
     cin.get();
