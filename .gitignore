@@ -1,0 +1,5 @@
+# CLion files
+.idea
+
+# macOS Finder 
+.DS_Store
