@@ -2,6 +2,6 @@
 Задания разбиты на папки по семинарам, внутри папок файлы разбиты на папки по задачам. 
 Свои идеи скидывать в папку "Student's_Ideas" в соответствующем задании.
 
-Гайд "как садвать задание" https://github.com/MIPT-DAFE-CS/765-Algo_s2-classwork/wiki/Guide-%231 
+Гайд "как сдавать задание" https://github.com/MIPT-DAFE-CS/765-Algo_s2-classwork/wiki/Guide-%231 
 
 keep the structure
