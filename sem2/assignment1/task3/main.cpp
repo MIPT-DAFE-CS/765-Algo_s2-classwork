@@ -1,3 +1,4 @@
+//отказываюсь это пояснять, слишком громоздкое решение. В папочке student's idea лежит куда лучше)
 #include <iostream>
 #include <iomanip>
 #include <vector>
