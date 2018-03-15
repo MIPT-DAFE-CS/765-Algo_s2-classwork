@@ -17,3 +17,5 @@ target_include_directories(sem2_assignment1_task5 PUBLIC sem2/common)
 
 add_executable(sem2_assignment1_task6 sem2/assignment1/task6/main.cpp)
 target_include_directories(sem2_assignment1_task6 PUBLIC sem2/common)
+
+add_executable(sem2_assignment2_task1 sem2/assignment2/task1/main.cpp)
