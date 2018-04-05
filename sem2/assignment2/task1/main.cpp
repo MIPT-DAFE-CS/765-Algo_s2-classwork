@@ -21,7 +21,7 @@ class CListGraph : public IWeightedGraph
 private:
     std::vector<std::vector <pair <int, int>>> _graph;
     int _size;
-    
+
 public:
     explicit CListGraph(int size) : _graph(size), _size(size)
     {
@@ -33,12 +33,12 @@ public:
         for (int i(0); i < _size; ++i)
             Graph->GetNext(i, _graph[i]);
     }
-    
+
     int VerticesCount() const override
     {
         return _size;
     }
-    
+
     void AddEdge(int from, int to, int weight) override
     {
         if (from >= _size || to >= _size || from < 0 || to < 0)
@@ -47,14 +47,14 @@ public:
         _graph[to].push_back(make_pair(from,weight));
         //_graph[to].push_back(from);
     }
-    
+
     void GetNext(int vertex, std::vector<pair <int,int>>& vertices) const override
     {
         if (vertex >= _size || vertex < 0)
             return;
         vertices = _graph[vertex];
     }
-    
+
     void GetPrev(int vertex, std::vector<pair <int,int>>& vertices) const override
     {
         /*if (vertex >= _size || vertex < 0)
@@ -68,7 +68,7 @@ public:
          }
          }*/
     }
-    
+
     int GetWeight (int from, int to) const override
     {
         for (auto i : _graph[from]) {
@@ -125,13 +125,12 @@ int main()
             graph.AddEdge(a, b, w);
         }
     }
-    
-    
+
+
     int from, to;
     cin >> from >> to;
-    
+
     cout << deijkstra(graph, from, to);
-    
+
     return 0;
 }
-
