@@ -6,163 +6,161 @@
 
 using namespace std;
 
-const short S=4;
+const short size = 4; //размер поля
 
-class Pole {
+class Field {
 public:
-    short size = S;
-    char hwgh ='';
-    short arr[S][S];
-    pair <short,short> inz; // позиция нуля
-    short distance=0;
-    short manh_d=0;
+    char way=' ';
+    short field[size][size];
+    pair <short, short> zero_in;
+    short graph_d = 0;
+    short manh_d = 0;
     pair <short,short> rp (short val) {
         if(val == 0) {
-            return make_pair(S-1, S-1);
+            return make_pair(size-1, size-1);
         } else {
-            return make_pair(val/S, val%S);
+            return make_pair(val/size, val%size);
         }
     }
-    Pole (short a[S][S]) {
-        size = S;
+    Field (short a[size][size]) {
         for (short i(0);i<size;++i) {
             for (short j(0);j<size;++j) {
-                arr[i][j]=a[i][j];
-                if (!arr[i][j]) inz=make_pair(i,j);
-            }
-        }
-        if (!manh_d) {
-            for (short i(0);i<size;++i) {
-                for (short j(0);j<size;++j) {
-                    short tmp = abs(rp(arr[i][j]).first-i)+abs(rp(arr[i][j]).second-j);
-                    manh_d+=tmp;
-                }
+                short tmp = abs(rp(field[i][j]).first-i)+abs(rp(field[i][j]).second-j);
+                manh_d+=tmp;
+                if (!field[i][j]) zero_in=make_pair(i,j);
             }
         }
     }
-
     uint64_t hashize() const {
         uint64_t a;
-        for (int i(0); i < S; ++i) {
-            for (int j(0); j < S; ++j) {
-              a |= (arr[i][j] & 0xF) << (i + j);
+        for (int i(0); i < size; ++i) {
+            for (int j(0); j < size; ++j) {
+                a |= (field[i][j] & 0xF) << (i + j);
             }
         }
         return a;
     }
-
-    /** @pre sero position shouldn't be in S-1 column. */
-    Pole R () {
-        short tmparr[S][S];
+    
+    /** @pre sero position shouldn't be in size-1 column. */
+    Field R () {
+        short tmpfield[size][size];
         for (short i(0);i<size;++i) {
             for (short j(0);j<size;++j) {
-                tmparr[i][j]=arr[i][j];
+                tmpfield[i][j]=field[i][j];
             }
         }
-        swap (tmparr[inz.first][inz.second], tmparr[inz.first][inz.second-1]);
-        Pole p(tmparr);
+        swap (tmpfield[zero_in.first][zero_in.second], tmpfield[zero_in.first][zero_in.second-1]);
+        Field p(tmpfield);
         return p;
     }
-
+    
     /** @pre sero position shouldn't be in 0 column. */
-    Pole L () {
-        short tmparr[S][S];
+    Field L () {
+        short tmpfield[size][size];
         for (short i(0);i<size;++i) {
             for (short j(0);j<size;++j) {
-                tmparr[i][j]=arr[i][j];
+                tmpfield[i][j]=field[i][j];
             }
         }
-        swap (tmparr[inz.first][inz.second], tmparr[inz.first][inz.second+1]);
-        Pole p(tmparr);
+        swap (tmpfield[zero_in.first][zero_in.second], tmpfield[zero_in.first][zero_in.second+1]);
+        Field p(tmpfield);
         return p;
     }
-
-    /** @pre sero position shoudn't be in S-1 row. */
-    Pole U () {
-        short tmparr[S][S];
+    
+    /** @pre sero position shoudn't be in size-1 row. */
+    Field U () {
+        short tmpfield[size][size];
         for (short i(0);i<size;++i) {
             for (short j(0);j<size;++j) {
-                tmparr[i][j]=arr[i][j];
+                tmpfield[i][j]=field[i][j];
             }
         }
-        swap (tmparr[inz.first][inz.second], tmparr[inz.first-1][inz.second]);
-        Pole p(tmparr);
+        swap (tmpfield[zero_in.first][zero_in.second], tmpfield[zero_in.first-1][zero_in.second]);
+        Field p(tmpfield);
         return p;
     }
-
+    
     /** @pre sero position shoudn't be in 0 row. */
-    Pole D () {
-        short tmparr[S][S];
+    Field D () {
+        short tmpfield[size][size];
         for (short i(0);i<size;++i) {
             for (short j(0);j<size;++j) {
-                tmparr[i][j]=arr[i][j];
+                tmpfield[i][j]=field[i][j];
             }
         }
-        swap (tmparr[inz.first][inz.second], tmparr[inz.first+1][inz.second]);
-        Pole p(tmparr);
+        swap (tmpfield[zero_in.first][zero_in.second], tmpfield[zero_in.first+1][zero_in.second]);
+        Field p(tmpfield);
         return p;
     }
-
-
 };
 
-ostream& operator << (ostream& os, Pole& p) {
+ostream& operator << (ostream& os, Field& f) {
     for (short i(0);i<4;++i) {
         os << endl;
         for (short j(0);j<4;++j) {
-            os << p.arr[i][j]<<" ";
+            os << f.field[i][j]<<" ";
         }
     }
     return os;
 }
 
+bool operator > (Field& f1, Field& f2) {return f1.graph_d > f2.graph_d;}
+bool operator < (Field& f1, Field& f2) {return f1.graph_d < f2.graph_d;}
 
 template <>
-struct hash<Pole>
+struct hash<Field>
 {
-    size_t operator()(const Pole & x) const {
+    size_t operator()(const Field & x) const {
         return std::hash<uint64_t>()(x.hashize());
     }
 };
 
+typedef pair <int, Field> PairIntField;
 
-typedef pair <int, Pole> PairIntPole;
-
-string AStar(Pole& p) {
-    unordered_set <Pole> visited;
-    set<PairIntPole> pip;
-    pip.emplace(make_pair(p.manh_d,p));
-    while (!pip.empty()) {
-        Pole current = (pip.begin())->second;
-        pip.erase(pip.begin());
-
-        pair <short,short> zero_index = p.inz; //позиция нуля
-        if (zero_index.second < S-1) {
+string AStar(Field& p) {
+    unordered_set <Field> visited;
+    set<PairIntField> pif;
+    pif.emplace(make_pair(p.manh_d,p));
+    while (!pif.empty()) {
+        Field current = (pif.begin())->second;
+        pif.erase(pif.begin());
+        
+        pair <short,short> zero_index = p.zero_in; //позиция нуля
+        if (zero_index.second < size-1) {
             auto right = current.R();
             if (!visited.find(right) && )
-            pip.emplace(make_pair(right.manh_d + 1 + current.distance, right));
-        }
+                //   pif.emplace(make_pair(right.manh_d + 1 + current.distance, right));
+                }
         if (zero_index.second > 0) {
             auto left = current.L();
-            pip.emplace(make_pair(left.manh_d + 1 + current.distance, left));
+            // pif.emplace(make_pair(left.manh_d + 1 + current.distance, left));
         }
         if (zero_index.first > 0) {
             auto up = current.U();
-            pip.emplace(make_pair(up.manh_d + 1 + current.distance, up));
+            //  pif.emplace(make_pair(up.manh_d + 1 + current.distance, up));
         }
-        if (zero_index.first < S-1) {
+        if (zero_index.first < size-1) {
             auto down = current.D();
-            pip.emplace(make_pair(down.manh_d + 1 + current.distance, down));
+            //   pif.emplace(make_pair(down.manh_d + 1 + current.distance, down));
         }
     }
-    return way_weight[to];
 }
 
 int main()
 {
-  Pole field(short arr[S][S]);
-  cin >> ;
-  AStar(field);
-
-  return 0;
+    //Field field(short field[S][S]);
+    //cin >> field;
+    //AStar(field);
+    return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
