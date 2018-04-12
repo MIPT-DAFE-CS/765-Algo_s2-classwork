@@ -1,0 +1,31 @@
+/Users/18myself/Documents/GitHub/765-Algo_s2-classwork/sem2/assignment2/task4/main.cpp:15:25: warning: in-class initialization of non-static data member is a C++11 extension [-Wc++11-extensions]
+    const Field* parent = nullptr;
+                        ^
+/Users/18myself/Documents/GitHub/765-Algo_s2-classwork/sem2/assignment2/task4/main.cpp:18:19: warning: in-class initialization of non-static data member is a C++11 extension [-Wc++11-extensions]
+    short graph_d = 0;
+                  ^
+/Users/18myself/Documents/GitHub/765-Algo_s2-classwork/sem2/assignment2/task4/main.cpp:19:18: warning: in-class initialization of non-static data member is a C++11 extension [-Wc++11-extensions]
+    short manh_d = 0;
+                 ^
+/Users/18myself/Documents/GitHub/765-Algo_s2-classwork/sem2/assignment2/task4/main.cpp:170:7: warning: first declaration of class template specialization of 'hash' outside namespace '__1' is a C++11 extension [-Wc++11-extensions]
+class hash<Field>
+      ^
+/Library/Developer/CommandLineTools/usr/include/c++/v1/type_traits:397:50: note: explicitly specialized declaration is here
+template <class _Tp> struct _LIBCPP_TEMPLATE_VIS hash;
+                                                 ^
+/Users/18myself/Documents/GitHub/765-Algo_s2-classwork/sem2/assignment2/task4/main.cpp:190:9: error: no member named 'emplace' in 'std::__1::set<Field, std::__1::less<Field>, std::__1::allocator<Field> >'
+    pif.emplace(p);
+    ~~~ ^
+/Users/18myself/Documents/GitHub/765-Algo_s2-classwork/sem2/assignment2/task4/main.cpp:195:17: error: no member named 'emplace' in 'std::__1::unordered_set<Field, std::__1::hash<Field>, Equal, std::__1::allocator<Field> >'
+        visited.emplace(current);
+        ~~~~~~~ ^
+/Users/18myself/Documents/GitHub/765-Algo_s2-classwork/sem2/assignment2/task4/main.cpp:199:14: warning: 'auto' type specifier is a C++11 extension [-Wc++11-extensions]
+        for (auto child : pw) {
+             ^
+/Users/18myself/Documents/GitHub/765-Algo_s2-classwork/sem2/assignment2/task4/main.cpp:199:25: warning: range-based for loop is a C++11 extension [-Wc++11-extensions]
+        for (auto child : pw) {
+                        ^
+/Users/18myself/Documents/GitHub/765-Algo_s2-classwork/sem2/assignment2/task4/main.cpp:214:25: error: no member named 'emplace' in 'std::__1::set<Field, std::__1::less<Field>, std::__1::allocator<Field> >'
+                    pif.emplace(child);
+                    ~~~ ^
+6 warnings and 3 errors generated.
