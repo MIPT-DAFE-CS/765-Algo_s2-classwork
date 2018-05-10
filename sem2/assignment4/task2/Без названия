@@ -1,0 +1,55 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <cmath>
+
+using namespace std;
+
+class SegmentTree
+{
+    std::vector <int> tree;
+    size_t size;
+    void build(int v, int l, int r, vector <int> & array)
+    {
+        if (l == r)
+        {
+            tree[v] = array[l];
+            return;
+        }
+        int m = (l + r) / 2;
+        build(left(v), l, m, array);
+        build(right(v), m + 1, r, array);
+        tree[v] = max(tree[left(v)], tree[right(v)]);
+    }
+
+    size_t left(size_t i) { return i * size + 0; }
+    size_t right(size_t i) { return i * size + 1; }
+
+  public:
+      SegmentTree(vector <int> array)
+      {
+          size = std::ceil(std::log2(array.size()));
+          size = 1 << size;
+          tree.resize(2 * size);
+
+          build(1, 0, array.size() - 1, array);
+      }
+
+    int getMax(int v, int tl, int tr, int l, int r)
+    {
+        if (tr == tl || (tl == l && tr == r))
+        {
+            return tree[v];
+        }
+        int tm = (tl + tr) / 2;
+        return max(getMax(left(v), tl, min(tm, r), l, min(tm, r)), getMax(right(v), max(tm + 1, l), tr, max(tm + 1, l), r));
+    }
+    int updateMax(int v, int tl, int tr, int l, int r, int value) {
+        if (tr == tl)
+        {
+            return tree[v] += value;
+        }
+        int tm = (tl + tr) / 2;
+        return tree[v] = max(updateMax(left(v), tl, min(tm, r), l, min(tm, r), value), updateMax(right(v), max(tm + 1, l), tr, max(tm + 1, l), r), value);
+    }
+};
